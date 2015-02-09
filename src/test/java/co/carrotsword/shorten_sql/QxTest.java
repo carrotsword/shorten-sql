@@ -20,9 +20,9 @@ public class QxTest {
   @Test
   public void simpleUseCase() throws Exception {
 
-    String jdbcurl = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
+    String url = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
 
-    try(Connection connection = DriverManager.getConnection(jdbcurl)) {
+    try(Connection connection = DriverManager.getConnection(url)) {
       boolean result = SQL("create table test_table (col1 varchar(10) not null, col2 int)").execute(connection);
       assertThat(result, is(false)); // No ResultSets
 
@@ -34,7 +34,10 @@ public class QxTest {
       // Derby returns column names with upper case
       assertThat(list.get(0).getString("COL1"), is("test1"));
       assertThat(list.get(0).getInt("COL2"), is(10));
+
+      SQL("drop table test_table").execute(connection);
     }
+
   }
 
   @Test
@@ -51,6 +54,8 @@ public class QxTest {
     // Derby returns column names with upper case
     assertThat(list.get(0).getString("COL1"), is("test1"));
     assertThat(list.get(0).getInt("COL2"), is(10));
+
+    SQL("drop table test_table").execute();
   }
 
 }

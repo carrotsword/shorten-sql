@@ -19,8 +19,8 @@ public class QxTest_NoConnectionProvider {
 
   @Test
   public void paging() throws Exception{
-    String jdbcurl = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
-    try(Connection connection = DriverManager.getConnection(jdbcurl)){
+    String url = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
+    try(Connection connection = DriverManager.getConnection(url)){
       SQL("create table test_table ( col1 varchar(20) )").execute(connection);
 
       for(int i=0;i<50; i++){
@@ -32,13 +32,15 @@ public class QxTest_NoConnectionProvider {
       assertThat(list.size(), is(10));
       assertThat(list.get(0).getString("COL1"), is("005"));
       assertThat(list.get(list.size()-1).getString("COL1"), is("014"));
+
+      SQL("drop table test_table").execute(connection);
     }
   }
 
   @Test
   public void noPaging() throws Exception{
-    String jdbcurl = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
-    try(Connection connection = DriverManager.getConnection(jdbcurl)){
+    String url = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
+    try(Connection connection = DriverManager.getConnection(url)){
       SQL("create table test_table ( col1 varchar(20) )").execute(connection);
 
       for(int i=0;i<50; i++){
@@ -50,6 +52,8 @@ public class QxTest_NoConnectionProvider {
       assertThat(list.size(), is(50));
       assertThat(list.get(0).getString("COL1"), is("000"));
       assertThat(list.get(list.size()-1).getString("COL1"), is("049"));
+
+      SQL("drop table test_table").execute();
     }
   }
 }
