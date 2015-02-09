@@ -1,5 +1,7 @@
 # shorten-sql
 
+[![Build Status](https://travis-ci.org/carrotsword/shorten-sql.svg?branch=master)](https://travis-ci.org/carrotsword/shorten-sql)
+
 shorten some procedures to work with jdbc
 
 ### Usage
