@@ -8,7 +8,7 @@ Please check out test code for simple use cases
 
 https://github.com/carrotsword/shorten-sql/blob/master/src/test/java/co/carrotsword/shorten_sql/QxTest.java
 
-### Requrements
+### Requirements
 
 Java 7 or later
 

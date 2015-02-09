@@ -2,10 +2,7 @@ package co.carrotsword.shorten_sql;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 
 /**
  * @author carrotsword
@@ -13,8 +10,8 @@ import java.util.ServiceLoader;
  */
 public class Qx {
 
-  StringBuilder sql = new StringBuilder();
-  List<Qp<?>> parameters = new ArrayList<>();
+  final StringBuilder sql = new StringBuilder();
+  final List<Qp<?>> parameters = new ArrayList<>();
 
   public Qx(String... sqlpart) {
     add(sqlpart);
@@ -41,7 +38,7 @@ public class Qx {
   }
 
   public static <T> Qp<T> P(T parameter) {
-    return new Qp(parameter);
+    return new Qp<>(parameter);
   }
 
   public void add(String... sqlpart) {
@@ -51,9 +48,7 @@ public class Qx {
   }
 
   public void add(Qp<?>... params) {
-    for (Qp<?> param : params) {
-      this.parameters.add(param);
-    }
+    Collections.addAll(this.parameters, params);
   }
 
   public void add(String sqlpart, Qp<?>... params) {

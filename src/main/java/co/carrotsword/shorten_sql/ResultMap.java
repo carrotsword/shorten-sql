@@ -10,20 +10,22 @@ import java.util.HashMap;
  */
 public class ResultMap extends HashMap<String, Object> {
 
-    public String getString(String key) {
-        return (String) get(key);
-    }
+  private static final long serialVersionUID = 6197505132318684701L;
 
-    public int getInt(String key) {
-        return (int) get(key);
-    }
+  public String getString(String key) {
+    return (String) get(key);
+  }
 
-    public Date getDate(String key){
-        return (Date) get(key);
-    }
+  public int getInt(String key) {
+    return (int) get(key);
+  }
 
-    public BigDecimal getBigDecimal(String key){
-        return (BigDecimal) get(key);
-    }
+  public Date getDate(String key) {
+    return (Date) get(key);
+  }
+
+  public BigDecimal getBigDecimal(String key) {
+    return (BigDecimal) get(key);
+  }
 
 }

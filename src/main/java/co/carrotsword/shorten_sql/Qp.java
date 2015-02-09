@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class Qp<T> {
 
-    T parameter;
+    final T parameter;
 
     public Qp(T param) {
         parameter = param;

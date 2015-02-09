@@ -15,7 +15,7 @@ public class ConnectionProviderImpl implements ConnectionProvider {
 
   static Connection connection;
 
-  String jdbcurl = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
+  final String jdbcurl = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
 
   @Override
   public Connection getConnection() {
