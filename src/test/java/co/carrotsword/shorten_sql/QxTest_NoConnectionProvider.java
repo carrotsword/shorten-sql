@@ -9,6 +9,7 @@ import java.util.List;
 import static co.carrotsword.shorten_sql.Qx.P;
 import static co.carrotsword.shorten_sql.Qx.SQL;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -52,6 +53,23 @@ public class QxTest_NoConnectionProvider {
       assertThat(list.size(), is(50));
       assertThat(list.get(0).getString("COL1"), is("000"));
       assertThat(list.get(list.size()-1).getString("COL1"), is("049"));
+
+      SQL("drop table test_table").execute();
+    }
+  }
+
+  @Test
+  public void selectWithASKeyword() throws Exception{
+    String url = "jdbc:derby:memory:target/test-resources/.javadb/sample;create=true";
+    try(Connection connection = DriverManager.getConnection(url)){
+      SQL("create table test_table ( col1 varchar(20) )").execute(connection);
+      SQL("insert into test_table(col1) values (?)" , P("001")).update(connection);
+
+      List<ResultMap> list = SQL("select col1 as col2 from test_table").list(connection);
+
+      assertThat(list.size(), is(1));
+      assertThat(list.get(0).getString("COL1"), is(nullValue()));
+      assertThat(list.get(0).getString("COL2"), is("001"));
 
       SQL("drop table test_table").execute();
     }

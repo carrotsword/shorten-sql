@@ -47,7 +47,7 @@ public class PreparedQx implements AutoCloseable {
       ResultMap map = new ResultMap();
       ResultSetMetaData metaData = resultSet.getMetaData();
       for (int j = 0; j < metaData.getColumnCount(); j++) {
-        String colName = metaData.getColumnName(j + 1);
+        String colName = metaData.getColumnLabel(j + 1);
         map.put(colName, resultSet.getObject(colName));
       }
       result.add(map);
