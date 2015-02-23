@@ -1,5 +1,6 @@
 package co.carrotsword.shorten_sql;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +58,25 @@ public class PreparedQx implements AutoCloseable {
 
   public boolean execute() throws SQLException {
     return statement.execute();
+  }
+
+  public InputStream stream(int index) throws SQLException {
+    ResultSet resultSet = statement.executeQuery();
+    if(resultSet.next()){
+      int columnType = resultSet.getMetaData().getColumnType(index+1);
+      InputStream inputStream;
+      switch(columnType){
+        case Types.CLOB:
+        case Types.NCLOB:
+          inputStream = resultSet.getAsciiStream(index+1);
+          break;
+        default:
+          inputStream = resultSet.getBinaryStream(index+1);
+      }
+
+      return new ProxyInputStream(inputStream, statement);
+
+    }
+    return null;
   }
 }

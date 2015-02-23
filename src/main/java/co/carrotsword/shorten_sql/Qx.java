@@ -1,5 +1,10 @@
 package co.carrotsword.shorten_sql;
 
+import co.carrotsword.shorten_sql.parameter_converter.DateConverter;
+import co.carrotsword.shorten_sql.parameter_converter.NumberConverter;
+
+import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -41,6 +46,22 @@ public class Qx {
     return new Qp<>(parameter);
   }
 
+  public static Qp<Date> TIMESTAMP(Date parameter){
+    return new Qp<>(parameter, new DateConverter());
+  }
+
+  public static Qp<Number> BIGDECIMAL(Number parameter){
+    return new Qp<>(parameter, new NumberConverter());
+  }
+
+  public static Qp<Number> BIGDECIMAL(String parameter){
+    return new Qp<>(new BigDecimal(parameter), new NumberConverter());
+  }
+
+  public void add(String sqlpart){
+    sql.append(sqlpart).append(" ");
+  }
+
   public void add(String... sqlpart) {
     for (String q : sqlpart) {
       sql.append(q).append(" ");
@@ -52,7 +73,7 @@ public class Qx {
   }
 
   public void add(String sqlpart, Qp<?>... params) {
-    sql.append(sqlpart);
+    sql.append(sqlpart).append(" ");
     add(params);
   }
 
@@ -110,6 +131,15 @@ public class Qx {
     } catch (SQLException e) {
       throw new SQLRuntimeException(e);
     }
+  }
+
+  public InputStream stream(int index) throws SQLException {
+    ConnectionProvider provider = getConnectionProvider();
+    return stream(provider.getConnection(), index);
+  }
+
+  public InputStream stream(Connection connection, int index) throws SQLException {
+    return new PreparedQx(connection, sql.toString()).stream(index);
   }
 
   public int update() throws SQLRuntimeException {

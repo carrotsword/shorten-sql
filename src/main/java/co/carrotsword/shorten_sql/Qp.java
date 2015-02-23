@@ -1,5 +1,7 @@
 package co.carrotsword.shorten_sql;
 
+import co.carrotsword.shorten_sql.parameter_converter.ParameterConverter;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -9,13 +11,26 @@ import java.sql.SQLException;
  */
 public class Qp<T> {
 
-    final T parameter;
+  final T parameter;
 
-    public Qp(T param) {
-        parameter = param;
-    }
+  final ParameterConverter<T, ?> converter;
 
-    void setToStatement(int index, PreparedStatement statement) throws SQLException {
+  public Qp(T param) {
+    parameter = param;
+    converter = null;
+  }
+
+  public <U> Qp(T param, ParameterConverter<T, U> conv){
+    parameter = param;
+    converter = conv;
+  }
+
+  void setToStatement(int index, PreparedStatement statement) throws SQLException {
+
+    if(converter == null) {
       statement.setObject(index, parameter);
+    }else{
+      statement.setObject(index, converter.convert(parameter));
     }
+  }
 }
