@@ -27,12 +27,17 @@ public class QxTest_NoConnectionProvider {
       for(int i=0;i<50; i++){
         SQL("insert into test_table(col1) values (?)" , P(String.format("%03d", i))).update(connection);
       }
-
-      List<ResultMap> list = SQL("select * from test_table").list(connection, 5, 15);
+      List<ResultMap> list = SQL("select * from test_table").list(connection, 0, 10);
 
       assertThat(list.size(), is(10));
-      assertThat(list.get(0).getString("COL1"), is("005"));
-      assertThat(list.get(list.size()-1).getString("COL1"), is("014"));
+      assertThat(list.get(0).getString("COL1"), is("000"));
+      assertThat(list.get(list.size()-1).getString("COL1"), is("009"));
+
+      List<ResultMap> list2 = SQL("select * from test_table").list(connection, 5, 10);
+
+      assertThat(list2.size(), is(10));
+      assertThat(list2.get(0).getString("COL1"), is("005"));
+      assertThat(list2.get(list2.size()-1).getString("COL1"), is("014"));
 
       SQL("drop table test_table").execute(connection);
     }
