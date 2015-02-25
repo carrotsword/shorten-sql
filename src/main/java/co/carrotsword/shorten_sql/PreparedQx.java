@@ -37,7 +37,7 @@ public class PreparedQx implements AutoCloseable {
 
   public List<ResultMap> list(int offset, int length) throws SQLException {
     statement.setFetchDirection(ResultSet.FETCH_FORWARD);
-    statement.setMaxRows(length);
+    statement.setMaxRows(length + offset);
     statement.setFetchSize(length);
     ResultSet resultSet = statement.executeQuery();
     resultSet.setFetchDirection(ResultSet.FETCH_FORWARD);
