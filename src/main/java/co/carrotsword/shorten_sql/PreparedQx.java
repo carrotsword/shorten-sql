@@ -41,7 +41,7 @@ public class PreparedQx implements AutoCloseable {
     statement.setFetchSize(length);
     ResultSet resultSet = statement.executeQuery();
     resultSet.setFetchDirection(ResultSet.FETCH_FORWARD);
-    resultSet.absolute(offset);
+    resultSet.absolute(offset+1);
     List<ResultMap> result = new ArrayList<>(length);
     int limit = (length == 0) ? Integer.MAX_VALUE : length; // ?
     for (int i = 0; i < limit && resultSet.next(); i++) {
